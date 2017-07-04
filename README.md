@@ -25,6 +25,11 @@
 </granite-dynamic-element>
 ```
 
+## Demo
+
+https://lostinbrittany.github.io/granite-dynamic-element/components/granite-dynamic-element/demo/index.html
+
+
 ## Install
 
 Install the component using [Bower](http://bower.io/):
