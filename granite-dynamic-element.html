@@ -1,0 +1,124 @@
+<!--
+@license MIT
+Copyright (c) 2016 Horacio "LostInBrittany" Gonzalez
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+-->
+<script>
+  class GraniteDynamicElement extends HTMLElement {
+  
+    constructor() {
+      super();      
+      this.mutationObserver = new MutationObserver(this.mutationCallback.bind(this));
+
+    }
+
+    connectedCallback() {
+
+      this.name = this.getAttribute('name');
+      this.slot = this.getAttribute('slot')
+      if (this.getAttribute('debug')) { 
+        console.debug('[granite-dynamic-element] connectedCallback - name',this.name); 
+      }
+
+      this.childElement =  document.createElement(this.name);
+      this.childElement.innerHTML = this.slot;
+
+      this.appendChild(this.childElement);
+
+      // Initial attribute copy
+      this.copyAttributesToChild(this.childElement);
+
+      // configuration of the observer:
+      let mutationObserverConfig = { attributes: true, childList: false, characterData: true }; 
+
+      // pass in the target node, as well as the observer options
+      this.mutationObserver.observe(this, mutationObserverConfig);
+
+      this.childrenMutationObservers = [];
+      for (let i=0; i<this.children.length; i++) {
+        let child = this.children[i];
+        let obs = new MutationObserver(this.childMutationCallback);
+        obs.observe(child,mutationObserverConfig);
+        this.childrenMutationObservers.push(obs);
+      }
+    }
+
+    disconnectedCallback() {
+      // later, you can stop observing
+      this.mutationObserver.disconnect();
+      this.childrenMutationObservers.forEach(obs => {
+        obs.disconnect();
+      });
+    }
+
+    static get is() {
+      return 'granite-dynamic-element';
+    }
+
+    get attributeList() {
+      return GraniteDynamicElement.getAttributeList(this.attributes);
+    }   
+    static getAttributeList(attributes) {
+      let attrs = [];
+      for (let i=0; i<attributes.length; i++) {
+        attrs.push(attributes[i].name || attributes[i].nodeName);
+      }
+      return attrs;
+    } 
+
+
+    copyAttributesToChild(child) {
+      this.attributeList.forEach( attr => {
+        child.setAttribute(attr, this.getAttribute(attr));
+      });
+      if (this.getAttribute('debug')) { 
+        console.debug('[granite-dynamic-element] copyAttributesToChild - child attributes', GraniteDynamicElement.getAttributeList(child));
+      }
+    }
+
+    childMutationCallback(mutations) {
+      mutations.forEach(mutation => {
+        console.log(mutation.type);
+        if ( mutation.type == 'attributes') {
+          if (this.getAttribute('debug')) { 
+            console.log('[granite-dynamic-element] childMutationCallback', GraniteDynamicElement.getAttributeList(mutation.target.attributes));
+          }
+          GraniteDynamicElement.getAttributeList(mutation.target.attributes).forEach(attr => {
+            if (mutation.target.parentElement.getAttribute(attr) != mutation.target.getAttribute(attr)) {
+              mutation.target.parentElement.setAttribute(attr,mutation.target.getAttribute(attr));
+            } 
+          });
+        }
+      });       
+    }
+
+    mutationCallback(mutations) {
+        mutations.forEach(mutation => {
+          console.log(mutation.type);
+          if ( mutation.type == 'attributes') {
+            if (this.getAttribute('debug')) { 
+              console.log('[granite-dynamic-element] mutationObserver', this.attributeList);
+            }
+            for (let i=0; i<this.children.length; i++) {
+              let child = this.children[i];
+              this.attributeList.forEach(attr => {                          
+                if (child.getAttribute(attr) != this.getAttribute(attr)) {
+                  child.setAttribute(attr,this.getAttribute(attr));
+                }                
+              });
+            }
+          }
+        });    
+    }
+
+  }
+
+  // Associate the new class with an element name
+  customElements.define(GraniteDynamicElement.is, GraniteDynamicElement);
+
+</script>
