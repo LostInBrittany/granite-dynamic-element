@@ -10,255 +10,379 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 <html lang="en">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
-    <title>granite-dynamic-element demo</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=yes">
+  <title>granite-dynamic-element demo</title>
 
-    <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
-    <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
+  <link rel="icon" href="./favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon" />
 
-    <script>
+  <script>
+    // setup Polymer options
+    window.Polymer = { lazyRegister: true, dom: 'shadow' };
 
-      // setup Polymer options
-      window.Polymer = {lazyRegister: true, dom: 'shadow'};
-
-      // load webcomponents polyfills
-      (function() {
-        if ('registerElement' in document
-            && 'import' in document.createElement('link')
-            && 'content' in document.createElement('template')) {
-          // browser has web components
-        } else {
-          // polyfill web components
-          var e = document.createElement('script');
-          e.src = '../webcomponentsjs/webcomponents-lite.min.js';
-          document.head.appendChild(e);
-        }
-      })();
-
-
-    </script>
-    <link   rel="import" href="../../polymer/polymer.html">
+    // load webcomponents polyfills
+    (function () {
+      if ('registerElement' in document
+        && 'import' in document.createElement('link')
+        && 'content' in document.createElement('template')) {
+        // browser has web components
+      } else {
+        // polyfill web components
+        var e = document.createElement('script');
+        e.src = '../webcomponentsjs/webcomponents-lite.min.js';
+        document.head.appendChild(e);
+      }
+    })();
+  </script>
+  <link rel="import" href="../../polymer/polymer.html">
 
 
-    <link rel="import" href="../../paper-styles/color.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-icons/iron-icons.html">
+  <link rel="import" href="../../paper-styles/color.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-icons/iron-icons.html">
 
-    <link rel="import" href="../../granite-dynamic-element/granite-dynamic-element.html">
+  <link rel="import" href="../../granite-dynamic-element/granite-dynamic-element.html">
 
-    <style is="custom-style" include="demo-pages-shared-styles">
-        .spacer-10 { width:100%; height:10px; }
-        .spacer-50 { width:100%; height:50px; }
-        .vertical-section-container {
-            max-width: 550px;
-        }
-        code[class*="language-"], pre[class*="language-"] {
-            color: black;
-            background: none;
-            text-shadow: 0 1px white;
-            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
-            text-align: left;
-            white-space: pre;
-            word-spacing: normal;
-            word-break: normal;
-            word-wrap: normal;
-            line-height: 1.5;
+  <style is="custom-style" include="demo-pages-shared-styles">
+    .spacer-10 {
+      width: 100%;
+      height: 10px;
+    }
 
-            -moz-tab-size: 4;
-            -o-tab-size: 4;
-            tab-size: 4;
+    .spacer-50 {
+      width: 100%;
+      height: 50px;
+    }
 
-            -webkit-hyphens: none;
-            -moz-hyphens: none;
-            -ms-hyphens: none;
-            hyphens: none;
-        }
+    .vertical-section-container {
+      max-width: 550px;
+    }
 
-        pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection, code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    code[class*="language-"],
+    pre[class*="language-"] {
+      color: black;
+      background: none;
+      text-shadow: 0 1px white;
+      font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      word-wrap: normal;
+      line-height: 1.5;
+
+      -moz-tab-size: 4;
+      -o-tab-size: 4;
+      tab-size: 4;
+
+      -webkit-hyphens: none;
+      -moz-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none;
+    }
+
+    pre[class*="language-"]::-moz-selection,
+    pre[class*="language-"] ::-moz-selection,
+    code[class*="language-"]::-moz-selection,
+    code[class*="language-"] ::-moz-selection {
+      text-shadow: none;
+      background: #b3d4fc;
+    }
+
+    pre[class*="language-"]::selection,
+    pre[class*="language-"] ::selection,
+    code[class*="language-"]::selection,
+    code[class*="language-"] ::selection {
+      text-shadow: none;
+      background: #b3d4fc;
+    }
+
+    @media print {
+      code[class*="language-"],
+      pre[class*="language-"] {
         text-shadow: none;
-            background: #b3d4fc;
-        }
+      }
+    }
 
-        pre[class*="language-"]::selection, pre[class*="language-"] ::selection, code[class*="language-"]::selection, code[class*="language-"] ::selection {
-        text-shadow: none;
-            background: #b3d4fc;
-        }
+    pre[class*="language-"] {
+      padding: 1em;
+      margin: .5em 0;
+      overflow: auto;
+    }
 
-        @media print {
-        code[class*="language-"], pre[class*="language-"] {
-        text-shadow: none;
-        }
+     :not(pre)>code[class*="language-"],
+    pre[class*="language-"] {
+      background: #f5f2f0;
+    }
 
-        }
+     :not(pre)>code[class*="language-"] {
+      padding: .1em;
+      border-radius: .3em;
+      white-space: normal;
+    }
 
-        pre[class*="language-"] {
-        padding: 1em;
-            margin: .5em 0;
-            overflow: auto;
-        }
+    .token.comment,
+    .token.prolog,
+    .token.doctype,
+    .token.cdata {
+      color: slategray;
+    }
 
-        :not(pre) > code[class*="language-"], pre[class*="language-"] {
-        background: #f5f2f0;
-        }
+    .token.punctuation {
+      color: #999;
+    }
 
-        :not(pre) > code[class*="language-"] {
-        padding: .1em;
-            border-radius: .3em;
-            white-space: normal;
-        }
+    .namespace {
+      opacity: .7;
+    }
 
-        .token.comment, .token.prolog, .token.doctype, .token.cdata {
-        color: slategray;
-        }
+    .token.property,
+    .token.tag,
+    .token.boolean,
+    .token.number,
+    .token.constant,
+    .token.symbol,
+    .token.deleted {
+      color: #905;
+    }
 
-        .token.punctuation {
-        color: #999;
-        }
+    .token.selector,
+    .token.attr-name,
+    .token.string,
+    .token.char,
+    .token.builtin,
+    .token.inserted {
+      color: #690;
+    }
 
-        .namespace {
-        opacity: .7;
-        }
+    .token.operator,
+    .token.entity,
+    .token.url,
+    .language-css .token.string,
+    .style .token.string {
+      color: #a67f59;
+      background: hsla(0, 0%, 100%, .5);
+    }
 
-        .token.property, .token.tag, .token.boolean, .token.number, .token.constant, .token.symbol, .token.deleted {
-        color: #905;
-        }
+    .token.atrule,
+    .token.attr-value,
+    .token.keyword {
+      color: #07a;
+    }
 
-        .token.selector, .token.attr-name, .token.string, .token.char, .token.builtin, .token.inserted {
-        color: #690;
-        }
+    .token.function {
+      color: #DD4A68;
+    }
 
-        .token.operator, .token.entity, .token.url, .language-css .token.string, .style .token.string {
-        color: #a67f59;
-            background: hsla(0, 0%, 100%, .5);
-        }
+    .token.regex,
+    .token.important,
+    .token.variable {
+      color: #e90;
+    }
 
-        .token.atrule, .token.attr-value, .token.keyword {
-        color: #07a;
-        }
+    .token.important,
+    .token.bold {
+      font-weight: bold;
+    }
 
-        .token.function {
-        color: #DD4A68;
-        }
+    .token.italic {
+      font-style: italic;
+    }
 
-        .token.regex, .token.important, .token.variable {
-        color: #e90;
-        }
+    .token.entity {
+      cursor: help;
+    }
 
-        .token.important, .token.bold {
-        font-weight: bold;
-        }
+     :host {
+      display: block;
 
-        .token.italic {
-        font-style: italic;
-        }
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+      0 1px 5px 0 rgba(0, 0, 0, 0.12),
+      0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      margin-bottom: 40px;
+      ;
+    }
 
-        .token.entity {
-        cursor: help;
-        }
+    .demo {
+      display: block;
+      border-bottom: 1px solid #e0e0e0;
+      background-color: white;
+      margin: 0;
+      padding: 20px;
+      ;
+    }
 
-        :host {
-        display: block;
+    .code-container {
+      margin: 0;
+      background-color: #f5f5f5;
+      font-size: 13px;
+      overflow: auto;
+      position: relative;
+      padding: 0 20px;
+      ;
+    }
 
-                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-                            0 1px 5px 0 rgba(0, 0, 0, 0.12),
-                            0 3px 1px -2px rgba(0, 0, 0, 0.2);
-                margin-bottom: 40px;
-                ;
-        }
+    .code {
+      padding: 20px;
+      margin: 0;
+      background-color: var(--google-grey-100);
+      font-size: 13px;
+      overflow: auto;
+      ;
+    }
 
-        .demo {
-        display: block;
-                border-bottom: 1px solid #e0e0e0;
-                background-color: white;
-                margin: 0;
-                padding: 20px;
-                ;
-        }
+    .code>pre {
+      margin: 0;
+      padding: 0 0 10px 0;
+    }
 
-        .code-container {
-        margin: 0;
-                background-color: #f5f5f5;
-                font-size: 13px;
-                overflow: auto;
-                position: relative;
-                padding: 0 20px;
-                ;
-        }
+    button {
+      position: absolute;
+      top: 0;
+      right: 0px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      background: #e0e0e0;
+    }
 
-        .code {
-        padding: 20px;
-                margin: 0;
-                background-color: var(--google-grey-100);
-                font-size: 13px;
-                overflow: auto;
-                ;
-        }
+    .demo-snippet {
+      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
 
-        .code > pre {
-        margin: 0;
-                padding: 0 0 10px 0;
-        }
-
-        button {
-        position: absolute;
-                top: 0;
-                right: 0px;
-                text-transform: uppercase;
-                border: none;
-                cursor: pointer;
-                background: #e0e0e0;
-        }
-
-        .demo-snippet {
-            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-            margin-bottom: 40px;
-        }
-    </style>
-  </head>
-
-  <body unresolved>
+<body unresolved>
 
 
-    <div class="vertical-section-container centered">
+  <div class="vertical-section-container centered">
 
-      <h3>granite-dynamic-element</h3>
+    <h3>granite-dynamic-element with native elements</h3>
 
-        <div class="demo-snippet">    
-            <div class="demo">
-                <granite-dynamic-element 
-                    name="h1" slot="Hello my friend!" 
-                    attr1="passed to child" 
-                    another-random-attribute="also passed to child">
-                </granite-dynamic-element>
-                <granite-dynamic-element 
-                    name="a" slot="Link to granite-dynamic-element GitHub" 
-                    href="https://github.com/LostInBrittany/granite-dynamic-element">
-                </granite-dynamic-element>
-            </div>    
+    <div class="demo-snippet">
+      <div class="demo">
+        <granite-dynamic-element name="h1" slot="Hello my friend!" attr1="passed to child" another-random-attribute="also passed to child">
+        </granite-dynamic-element>
+        <granite-dynamic-element name="a" slot="Link to granite-dynamic-element GitHub" href="https://github.com/LostInBrittany/granite-dynamic-element">
+        </granite-dynamic-element>
+      </div>
 
-            <div class="code-container">
-                <div class="code">
-                    <pre><code>
+      <div class="code-container">
+        <div class="code">
+          <pre><code>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>granite-dynamic-element</span> 
-    <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>h1<span class="token punctuation">"</span></span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Hello my friend<span class="token punctuation">"</span></span> 
-    <span class="token attr-name">attr1</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>passed to child<span class="token punctuation">"</span></span> 
-    <span class="token attr-name">another-random-attribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>also passed to child<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>h1<span class="token punctuation">"</span></span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Hello my friend<span class="token punctuation">"</span></span> 
+  <span class="token attr-name">attr1</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>passed to child<span class="token punctuation">"</span></span> 
+  <span class="token attr-name">another-random-attribute</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>also passed to child<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>granite-dynamic-element</span><span class="token punctuation">&gt;</span></span>
-                    </code></pre>
-                    <pre><code>
+          </code></pre>
+          <pre><code>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>granite-dynamic-element</span> 
     <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>a<span class="token punctuation">"</span></span> <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Link to granite-dynamic-element GitHub<span class="token punctuation">"</span></span> 
     <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>https://github.com/LostInBrittany/granite-dynamic-element<span class="token punctuation">"</span></span> 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>granite-dynamic-element</span><span class="token punctuation">&gt;</span></span>
-                    </code></pre>
-                </div>      
-            </div>    
+          </code></pre>
         </div>
-
+      </div>
     </div>
 
-  </body>
+  </div>
+
+
+
+
+  <div class="vertical-section-container centered">
+
+    <h3>granite-dynamic-element with native elements</h3>
+
+    <div class="demo-snippet">
+      <div class="demo">
+
+        <link rel="import" href="../../granite-alert/granite-alert.html">
+
+        <template is="dom-bind" id="dom-bind">
+          <granite-dynamic-element name='granite-alert' slot='Alert! Alert!' level$="[[level]]">
+          </granite-dynamic-element>
+        </template>
+
+        <script>
+          var autobind = document.querySelector('#dom-bind');
+
+          // The dom-change event signifies when the template has stamped its DOM.
+          autobind.addEventListener('dom-change', function () {
+            console.log('template is ready.')
+          });
+
+          // set data property on dom-bind
+          let changeLevel = () => {
+            window.setTimeout(() => {
+              console.log('current level', autobind.level);
+              if (autobind.level != 'success') {
+                autobind.level = 'success';
+              } else {
+                autobind.level = 'warning';
+              }
+              changeLevel();
+            }, 2000);
+          };
+          changeLevel();
+        </script>
+      </div>
+
+      <div class="code-container">
+        <div class="code">
+          <pre><code>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>granite-alert</span> <span class="token attr-name">level</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>success<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> 
+      <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>import<span class="token punctuation">"</span></span>
+      <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>../../granite-alert/granite-alert.html<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">is</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dom-bind<span class="token punctuation">"</span></span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>dom-bind<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>granite-dynamic-element</span> 
+          <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>granite-alert<span class="token punctuation">"</span></span> 
+          <span class="token attr-name">slot</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>Alert! Alert!<span class="token punctuation">"</span></span> 
+          <span class="token attr-name">level$</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>[[level]]<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>granite-dynamic-element</span><span class="token punctuation">&gt;</span></span> 
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+    <span class="token keyword">var</span> autobind <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'#dom-bind'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// The dom-change event signifies when the template </span>
+    <span class="token comment" spellcheck="true">// has stamped its DOM.</span>
+    autobind<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'dom-change'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'template is ready.'</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment" spellcheck="true">// set data property on dom-bind</span>
+    <span class="token keyword">let</span> changeLevel <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span> 
+      window<span class="token punctuation">.</span><span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'current level'</span><span class="token punctuation">,</span> autobind<span class="token punctuation">.</span>level<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>autobind<span class="token punctuation">.</span>level <span class="token operator">!=</span> <span class="token string">'success'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            autobind<span class="token punctuation">.</span>level <span class="token operator">=</span> <span class="token string">'success'</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            autobind<span class="token punctuation">.</span>level <span class="token operator">=</span> <span class="token string">'warning'</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">changeLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+    <span class="token function">changeLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>   
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>granite-alert</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+</body>
+
 </html>

@@ -13,8 +13,7 @@
   "main": "granite-dynamic-element.html",
   "license": "MIT",
   "homepage": "https://github.com/LostInBrittany/granite-dynamic-element",
-  "ignore": [
-  ],
+  "ignore": [],
   "dependencies": {
     "polymer": "Polymer/polymer#1.9 - 2"
   },
@@ -26,13 +25,14 @@
     "iron-test-helpers": "PolymerElements/iron-test-helpers#1 - 2",
     "test-fixture": "PolymerElements/test-fixture#^3.0.0-rc.1",
     "web-component-tester": "^6.0.0",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0",
+    "granite-alert": "LostInBrittany/granite-alert#^1.1.0"
   },
   "variants": {
     "1.x": {
       "dependencies": {
         "polymer": "Polymer/polymer#^1.9",
-    "clipboard": "^1.7.0"
+        "clipboard": "^1.7.0"
       },
       "devDependencies": {
         "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
@@ -42,11 +42,18 @@
         "iron-test-helpers": "PolymerElements/iron-test-helpers#^1.0.0",
         "test-fixture": "PolymerElements/test-fixture#^1.0.0",
         "webcomponentsjs": "webcomponents/webcomponentsjs#^0.7.0",
-        "web-component-tester": "Polymer/web-component-tester#^4.0.0"
+        "web-component-tester": "Polymer/web-component-tester#^4.0.0",
+        "granite-alert": "LostInBrittany/granite-alert#~1.1.0"
       },
       "resolutions": {
         "webcomponentsjs": "^0.7"
       }
     }
+  },
+  "resolutions": {
+    "webcomponentsjs": "^1.0.0"
+  },
+  "demos": {
+    "Basic demo": "demo/index.html" 
   }
 }

@@ -83,9 +83,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     childMutationCallback(mutations) {
       mutations.forEach(mutation => {
-        console.log(mutation.type);
         if ( mutation.type == 'attributes') {
-          if (this.getAttribute('debug')) { 
+          if (mutation.target.parentElement.getAttribute('debug')) { 
             console.log('[granite-dynamic-element] childMutationCallback', GraniteDynamicElement.getAttributeList(mutation.target.attributes));
           }
           GraniteDynamicElement.getAttributeList(mutation.target.attributes).forEach(attr => {
@@ -99,7 +98,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
     mutationCallback(mutations) {
         mutations.forEach(mutation => {
-          console.log(mutation.type);
           if ( mutation.type == 'attributes') {
             if (this.getAttribute('debug')) { 
               console.log('[granite-dynamic-element] mutationObserver', this.attributeList);
